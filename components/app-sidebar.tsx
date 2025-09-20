@@ -1,40 +1,40 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Calendar, House, LayoutDashboard, Settings } from "lucide-react";
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
+import { NavUser } from "./ui/nav-user";
+import NavHeader from "./ui/nav-header";
 
 // Menu items.
 const items = [
   {
-    title: "Home",
+    title: "Dashboard",
     url: "#",
-    icon: Home,
+    icon: LayoutDashboard,
   },
   {
-    title: "Inbox",
+    title: "Propiedades",
     url: "#",
-    icon: Inbox,
+    icon: House,
   },
   {
-    title: "Calendar",
+    title: "Calendario",
     url: "#",
     icon: Calendar,
   },
   {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
+    title: "Configuraciones",
     url: "#",
     icon: Settings,
   },
@@ -43,9 +43,12 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar>
+      <SidebarHeader>
+        <NavHeader />
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Inicio</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -62,6 +65,17 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <DropdownMenu>
+          <NavUser
+            user={{
+              name: "Nahuel Mileo",
+              email: "nahuelmileo@hotmail.com",
+              avatar: "",
+            }}
+          />
+        </DropdownMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
