@@ -69,8 +69,6 @@ export function AppSidebar() {
         <DropdownMenu>
           <NavUser
             user={{
-              name: "Nahuel Mileo",
-              email: "nahuelmileo@hotmail.com",
               avatar: "",
             }}
           />

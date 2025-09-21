@@ -18,7 +18,11 @@ export default function Page() {
     };
 
     fetchProfile();
-  }, []);
+  }, [profile]);
 
-  return <h1 className="text-7xl">{profile?.full_name}</h1>;
+  useEffect(() => {
+    console.log(profile);
+  }, [profile]);
+
+  return <h1 className="text-7xl"></h1>;
 }
