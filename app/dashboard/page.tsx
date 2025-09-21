@@ -20,9 +20,5 @@ export default function Page() {
     fetchProfile();
   }, [profile]);
 
-  useEffect(() => {
-    console.log(profile);
-  }, [profile]);
-
   return <h1 className="text-7xl"></h1>;
 }

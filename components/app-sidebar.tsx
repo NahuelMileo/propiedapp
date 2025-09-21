@@ -20,22 +20,22 @@ import NavHeader from "./ui/nav-header";
 const items = [
   {
     title: "Dashboard",
-    url: "#",
+    url: "/dashboard",
     icon: LayoutDashboard,
   },
   {
     title: "Propiedades",
-    url: "#",
+    url: "/propiedades",
     icon: House,
   },
   {
     title: "Calendario",
-    url: "#",
+    url: "/calendario",
     icon: Calendar,
   },
   {
     title: "Configuraciones",
-    url: "#",
+    url: "/configuraciones",
     icon: Settings,
   },
 ];
