@@ -25,7 +25,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { createClient } from "@/lib/supabase/client";
+import { createBrowserClient } from "@supabase/ssr";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Skeleton } from "./skeleton";
@@ -42,7 +42,10 @@ export function NavUser({
   const router = useRouter();
 
   const logout = async () => {
-    const supabase = createClient();
+    const supabase = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    );
     await supabase.auth.signOut();
     router.push("/auth/login");
   };
@@ -52,7 +55,10 @@ export function NavUser({
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const supabase = createClient();
+      const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+      );
       const { data, error } = await supabase
         .from("profiles")
         .select("*")

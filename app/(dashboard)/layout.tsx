@@ -37,7 +37,7 @@ export default function RootLayout({
       <AppSidebar />
       <SidebarInset>
         <Header />
-        <main className="p-8">{children}</main>
+        <main className="h-full p-8">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );
