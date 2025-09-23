@@ -1,6 +1,16 @@
 "use client";
 import { PropertyForm } from "@/components/propiedades/property-form";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import placeholder from "../../../public/placeholder.svg";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -14,6 +24,7 @@ import { createBrowserClient } from "@supabase/ssr";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
 import { set } from "zod";
+import { DeletePropertyDialog } from "@/components/propiedades/delete-property-dialog";
 
 export default function Page() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -22,15 +33,6 @@ export default function Page() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
   );
-
-  type Property = {
-    id: string;
-    name: string;
-    address: string;
-    price: number;
-    image?: string;
-    created_at: string;
-  };
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -47,8 +49,23 @@ export default function Page() {
 
     fetchProperties();
   }, []);
+
+  const eliminar = async (id: string) => {
+    const { error } = await supabase.from("properties").delete().eq("id", id);
+    if (error) {
+      toast.error("Error al eliminar la propiedad");
+      return;
+    } else {
+      setProperties(properties.filter((prop) => prop.id !== id));
+      toast.success("Propiedad eliminada");
+    }
+  };
+
+  const editar = () => {};
+
   return (
     <div className="flex h-full flex-col">
+      <Toaster position="top-right" richColors />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-semibold">Propiedades</h1>
@@ -67,7 +84,11 @@ export default function Page() {
                 Rellena el formulario para registrar una nueva propiedad.
               </DialogDescription>
             </DialogHeader>
-            <PropertyForm />
+            <PropertyForm
+              onCreate={(newProp) =>
+                setProperties((prev) => [newProp, ...prev])
+              }
+            />
           </DialogContent>
         </Dialog>
       </div>
@@ -80,18 +101,31 @@ export default function Page() {
             No hay propiedades registradas.
           </p>
         ) : (
-          <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-2 gap-4">
             {properties.map((prop) => (
-              <div
-                key={prop.id}
-                className="flex justify-between rounded-md border p-4 shadow-sm"
-              >
-                <div>
-                  <h2 className="font-semibold">{prop.name}</h2>
-                  <p>{prop.address}</p>
-                </div>
-                <div className="font-medium">${prop.price}</div>
-              </div>
+              <Card key={prop.id}>
+                <CardHeader>
+                  <CardTitle>{prop.name}</CardTitle>
+                  <CardDescription>{prop.address}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Image
+                    priority
+                    src={prop.image ?? placeholder}
+                    alt={prop.name}
+                    width={400}
+                    height={400}
+                    className="aspect-square object-cover"
+                  />
+                </CardContent>
+                <CardFooter className="justify-between">
+                  <Button onClick={editar}>Editar</Button>
+                  <DeletePropertyDialog
+                    propertyName={prop.name}
+                    onDelete={() => eliminar(prop.id)}
+                  />
+                </CardFooter>
+              </Card>
             ))}
           </div>
         )}
